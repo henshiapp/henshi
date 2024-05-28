@@ -1,0 +1,42 @@
+services:
+  ui:
+    build:
+      context: apps/ui
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    volumes:
+      - ./apps/ui:/app
+      - /app/node_modules
+    environment:
+      - PORT=3000
+
+  auth-service:
+    build:
+      context: apps/auth-service
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    volumes:
+      - ./apps/auth-service:/app
+      - /app/node_modules
+    environment:
+      - PORT=3000
+
+  nginx:
+    build:
+      context: infra/nginx
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    environment:
+      - UI=ui
+      - UI_PORT=3000
+      - AUTH_SERVICE=auth-service
+      - AUTH_SERVICE_PORT=3000
+    ports:
+      - "8080:80"
+    depends_on:
+      - ui
+      - auth-service
+
