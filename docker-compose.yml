@@ -1,4 +1,27 @@
 services:
+  postgres:
+    image: postgres:15.1
+    environment:
+      POSTGRES_DB: 'auth'
+      POSTGRES_USER: 'henshi'
+      POSTGRES_PASSWORD: 'henshi'
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - apps
+
+  redis:
+    image: redis:7.2
+    ports:
+      - '6379:6379'
+    command: redis-server --requirepass henshi
+    volumes:
+      - redis:/data
+    networks:
+      - apps
+
   ui:
     build:
       context: apps/ui
@@ -10,6 +33,8 @@ services:
       - /app/node_modules
     environment:
       - PORT=3000
+    networks:
+      - apps
 
   auth-service:
     build:
@@ -22,6 +47,28 @@ services:
       - /app/node_modules
     environment:
       - PORT=3000
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - apps
+
+  users-service:
+    build:
+      context: apps/users-service
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    volumes:
+      - ./apps/users-service:/app
+      - /app/node_modules
+    environment:
+      - PORT=3000
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - apps
 
   nginx:
     build:
@@ -34,9 +81,21 @@ services:
       - UI_PORT=3000
       - AUTH_SERVICE=auth-service
       - AUTH_SERVICE_PORT=3000
+      - USERS_SERVICE=users-service
+      - USERS_SERVICE_PORT=3000
     ports:
       - "8080:80"
     depends_on:
       - ui
       - auth-service
+      - users-service
+    networks:
+      - apps
 
+volumes:
+  postgres:
+  redis:
+
+networks:
+  apps:
+    driver: bridge
