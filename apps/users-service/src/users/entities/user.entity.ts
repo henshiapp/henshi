@@ -29,7 +29,7 @@ export class User {
     @Column()
     password: string;
 
-    @Column({ enum: UserRole, default: UserRole.FREE_USER })
+    @Column({ type: "varchar", enum: UserRole, default: UserRole.FREE_USER })
     role: UserRole;
 
     @Column({ default: false })
@@ -44,3 +44,4 @@ export class User {
     @UpdateDateColumn()
     updatedAt: Date;
 }
+

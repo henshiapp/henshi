@@ -14,7 +14,7 @@ export default () => ({
         url: process.env.REDIS_URL,
     },
     cookies: {
-        domain: process.env.NODE_ENV === 'development' ? 'localhost' : '.trilhainvestidor.com.br',
+        domain: process.env.NODE_ENV === 'development' ? 'localhost' : '.neumanf.com',
         secure: process.env.NODE_ENV !== 'development',
     },
     jwt: {

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import config from './shared/configuration/config';
+import config from './configuration/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './users/users.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { User } from './users/entities/user.entity';
 
 @Module({
     imports: [
@@ -15,10 +15,13 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         }),
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
-            useFactory: (configService: ConfigService) => ({
+            useFactory: (configService: ConfigService) => 
+                ({
                 type: 'postgres',
                 url: configService.get('database.url'),
-                entities: [join(__dirname, '.', '**', '*.entity.{ts,js}')],
+                entities: [
+                    User,
+                ],
                 migrations: [join(__dirname, 'migrations', '*.ts')],
                 synchronize: true,
             }),

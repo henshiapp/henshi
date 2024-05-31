@@ -3,11 +3,11 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Request } from 'express';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
-import { Roles } from '../shared/decorators/roles.decorator';
-import { User, UserRole } from './entities/user.entity';
-import { RolesGuard } from '../shared/guards/roles.guard';
+import { Roles } from '@henshi/decorators';
+import { UserRole } from '@henshi/models';
 import { MessagePattern } from '@nestjs/microservices';
-import { AuthGuard } from '../shared/guards/auth.guard';
+import { AuthGuard } from '@henshi/guards';
+import { User } from './entities/user.entity';
 
 @Controller('/api/users')
 export class UsersController {
@@ -25,6 +25,7 @@ export class UsersController {
         return this.usersService.findAll(query);
     }
 
+    @UseGuards(AuthGuard)
     @Get('me')
     async me(@Req() req: Request) {
         const user = await this.usersService.findOne(req.user['sub']);

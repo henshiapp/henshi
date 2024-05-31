@@ -22,54 +22,6 @@ services:
     networks:
       - apps
 
-  ui:
-    build:
-      context: apps/ui
-      dockerfile: Dockerfile
-      target: dev
-    restart: unless-stopped
-    volumes:
-      - ./apps/ui:/app
-      - /app/node_modules
-    environment:
-      - PORT=3000
-    networks:
-      - apps
-
-  auth-service:
-    build:
-      context: apps/auth-service
-      dockerfile: Dockerfile
-      target: dev
-    restart: unless-stopped
-    volumes:
-      - ./apps/auth-service:/app
-      - /app/node_modules
-    environment:
-      - PORT=3000
-    depends_on:
-      - postgres
-      - redis
-    networks:
-      - apps
-
-  users-service:
-    build:
-      context: apps/users-service
-      dockerfile: Dockerfile
-      target: dev
-    restart: unless-stopped
-    volumes:
-      - ./apps/users-service:/app
-      - /app/node_modules
-    environment:
-      - PORT=3000
-    depends_on:
-      - postgres
-      - redis
-    networks:
-      - apps
-
   nginx:
     build:
       context: infra/nginx
@@ -77,18 +29,16 @@ services:
       target: dev
     restart: unless-stopped
     environment:
-      - UI=ui
-      - UI_PORT=3000
-      - AUTH_SERVICE=auth-service
+      - UI=host.docker.internal
+      - UI_PORT=4200
+      - AUTH_SERVICE=host.docker.internal
       - AUTH_SERVICE_PORT=3000
-      - USERS_SERVICE=users-service
-      - USERS_SERVICE_PORT=3000
+      - USERS_SERVICE=host.docker.internal
+      - USERS_SERVICE_PORT=3010
     ports:
       - "8080:80"
-    depends_on:
-      - ui
-      - auth-service
-      - users-service
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - apps
 

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import config from './shared/configuration/config';
+import config from './configuration/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';

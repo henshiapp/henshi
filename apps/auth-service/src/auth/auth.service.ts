@@ -4,7 +4,7 @@ import { AuthDto } from './dto/auth.dto';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { User } from '../users/entities/user.entity';
+import { User } from '@henshi/models';
 import { ConfigService } from '@nestjs/config';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
