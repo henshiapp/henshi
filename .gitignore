@@ -46,4 +46,10 @@ Thumbs.db
 .nitro
 .cache
 
+# Local env files
 .env
+.env.*
+!.env.example
+
+.turbo
+

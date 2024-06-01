@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
+    "outDir": "./dist",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -11,15 +12,27 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-      "@henshi/decorators": ["libs/decorators/src/index.ts"],
-      "@henshi/guards": ["libs/guards/src/index.ts"],
-      "@henshi/models": ["libs/models/src/index.ts"]
-    }
+    // "paths": {
+    //   "@henshi/decorators": [
+    //     "libs/decorators/src/index.ts"
+    //   ],
+    //   "@henshi/guards": [
+    //     "libs/guards/src/index.ts"
+    //   ],
+    //   "@henshi/models": [
+    //     "libs/models/src/index.ts"
+    //   ]
+    // }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

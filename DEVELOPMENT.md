@@ -7,5 +7,5 @@
 pnpm docker:dev:up
 
 # Start the application
-pnpm start:dev 
+pnpm dev 
 ```

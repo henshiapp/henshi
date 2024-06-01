@@ -3,7 +3,17 @@ import * as process from 'process';
 
 export default () => ({
     env: process.env.NODE_ENV,
-    port: parseInt(process.env.PORT, 10) || 3001,
+    port: parseInt(process.env.PORT, 10) || 3000,
+    microservice: {
+        auth: {
+            host: process.env.MICROSERVICE_HOST || 'localhost',
+            port: parseInt(process.env.MICROSERVICE_PORT) || 4000,
+        },
+        users: {
+            host: process.env.MICROSERVICE_HOST || 'localhost',
+            port: parseInt(process.env.MICROSERVICE_PORT) || 4010,
+        }
+    },
     client: {
         url: process.env.FRONTEND_URL,
     },
