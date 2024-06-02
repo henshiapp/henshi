@@ -1,0 +1,105 @@
+<script setup lang="ts">
+import * as Yup from 'yup';
+import { getErrorMessage } from '~/api/utils/get-error-message';
+import { errorToast } from '~/utils/toast';
+
+const toast = useToast();
+const router = useRouter();
+
+interface SignUpForm {
+    name: string;
+    email: string;
+    password: string;
+}
+
+const { handleSubmit, meta } = useForm<SignUpForm>({
+    validationSchema: Yup.object({
+        name: Yup.string().required(),
+        email: Yup.string().email().required(),
+        password: Yup.string().required(),
+    }),
+});
+const name = useField('name');
+const email = useField('email');
+const password = useField('password');
+
+const isLoading = ref(false);
+
+const onSubmit = handleSubmit(async (values: SignUpForm) => {
+    isLoading.value = true;
+    const { data, pending, error } = await useApi('/auth/signup', {
+        method: 'POST',
+        body: values,
+    });
+    isLoading.value = false;
+
+    if (error.value) {
+        return errorToast(toast, error);
+    }
+    if (data.value) {
+        router.push('/auth/login');
+    }
+});
+</script>
+
+<template>
+    <Toast />
+    <div class="flex h-screen">
+        <div class="flex-1 flex justify-center items-center">
+            <NuxtLink to="/">
+                <Image src="/assets/images/logo-full.svg" width="300" />
+            </NuxtLink>
+        </div>
+        <div class="flex-1 flex justify-center items-center bg-primary-50 h-full">
+            <div class="bg-white rounded-xl py-6 sm:py-8 lg:py-12">
+                <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
+                    <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-8 lg:text-3xl">
+                        Create an account
+                    </h2>
+
+                    <form @submit.prevent="onSubmit" class="mx-auto max-w-lg rounded-lg">
+                        <div class="flex flex-col gap-4 p-4 md:p-8">
+                            <HInputText
+                                label="Full name"
+                                v-model="name.value.value"
+                                :errorMessage="name.errorMessage.value"
+                            />
+                            <HInputText
+                                label="Email"
+                                v-model="email.value.value"
+                                :errorMessage="email.errorMessage.value"
+                            />
+                            <HInputText
+                                label="Password"
+                                v-model="password.value.value"
+                                :errorMessage="password.errorMessage.value"
+                            />
+
+                            <Button
+                                type="submit"
+                                class="font-bold py-1 mt-1"
+                                :disabled="!meta.valid || isLoading"
+                                :loading="isLoading"
+                                >Sign up</Button
+                            >
+
+                            <div class="flex items-center justify-center p-4">
+                                <p class="text-center text-sm text-gray-500">
+                                    Already have an account?
+                                    <NuxtLink
+                                        to="/auth/login"
+                                        class="text-primary-500 transition duration-100 hover:text-primary-600 active:text-primary-700"
+                                    >
+                                        Log in
+                                    </NuxtLink>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style></style>

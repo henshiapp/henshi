@@ -1,14 +1,4 @@
-import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    Req,
-    UseGuards,
-    Res,
-    BadRequestException,
-    Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, UseGuards, Res, BadRequestException, Query } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
@@ -66,9 +56,7 @@ export class AuthController {
         const savedToken = await this.authService.getEmailConfirmationToken(userId);
 
         if (!savedToken) {
-            throw new BadRequestException(
-                'Token expirado. Por favor realize o cadastro novamente.'
-            );
+            throw new BadRequestException('Token expirado. Por favor realize o cadastro novamente.');
         }
 
         if (savedToken !== verificationToken) {
