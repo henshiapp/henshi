@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@henshi/types": "workspace:*",
     "@nuxtjs/tailwindcss": "^6.12.0",
     "@pinia/nuxt": "^0.5.1",
     "@tabler/icons-webfont": "^3.5.0",
@@ -19,6 +20,7 @@
     "defu": "^6.1.4",
     "nuxt": "^3.11.2",
     "nuxt-primevue": "^3.0.0",
+    "nuxt-viewport": "^2.1.5",
     "primevue": "^3.52.0",
     "vee-validate": "^4.12.8",
     "vue": "^3.4.27",

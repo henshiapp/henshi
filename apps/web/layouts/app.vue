@@ -7,13 +7,25 @@ const sidebarItems = [
     {
         label: 'Dashboard',
         icon: 'ti ti-dashboard',
-        link: '/app/dashboard',
+        path: '/app/dashboard',
         new: false,
     },
 ];
 
 const { user } = useAuthStore();
 const toast = useToast();
+const route = useRoute();
+const viewport = useViewport();
+
+const isSidebarOpen = ref(!viewport.isLessThan('tablet'));
+
+watch(viewport.breakpoint, () => {
+    isSidebarOpen.value = !viewport.isLessThan('tablet');
+});
+
+const toggleSidebar = () => {
+    isSidebarOpen.value = !isSidebarOpen.value;
+};
 
 const userMenu = ref();
 
@@ -34,16 +46,14 @@ const logout = async () => {
 
 <template>
     <Toast />
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav class="fixed top-0 z-50 w-full border-b bg-zinc-950 border-zinc-700">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
                     <button
-                        data-drawer-target="logo-sidebar"
-                        data-drawer-toggle="logo-sidebar"
-                        aria-controls="logo-sidebar"
                         type="button"
-                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        class="inline-flex items-center p-2 text-sm text-zinc-500 rounded-lg sm:hidden hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:focus:ring-zinc-600"
+                        @click="toggleSidebar"
                     >
                         <span class="sr-only">Open sidebar</span>
                         <svg
@@ -69,39 +79,40 @@ const logout = async () => {
                         <div>
                             <button
                                 type="button"
-                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                                class="flex text-sm bg-zinc-800 rounded-full focus:ring-4 focus:ring-zinc-300 dark:focus:ring-zinc-600"
                                 @click="toggleUserMenu"
                             >
                                 <span class="sr-only">Open user menu</span>
-                                <img
-                                    class="w-8 h-8 rounded-full"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                                    alt="user photo"
+                                <Avatar
+                                    icon="ti ti-user"
+                                    size="normal"
+                                    shape="circle"
+                                    style="background-color: #f5cb5c"
                                 />
                             </button>
                         </div>
 
                         <OverlayPanel ref="userMenu" :pt="{ content: 'p-0' }">
                             <div
-                                class="text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+                                class="text-base list-none divide-y rounded shadow bg-zinc-700 divide-zinc-600"
                                 id="dropdown-user"
                             >
                                 <div class="px-4 py-3" role="none">
-                                    <p class="text-sm font-bold text-gray-900 dark:text-white" role="none">
-                                        {{ user.name }}
+                                    <p class="text-sm font-bold text-zinc-900 dark:text-white" role="none">
+                                        {{ user?.name }}
                                     </p>
                                     <p
-                                        class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
+                                        class="text-sm font-medium text-zinc-900 truncate dark:text-zinc-300"
                                         role="none"
                                     >
-                                        {{ user.email }}
+                                        {{ user?.email }}
                                     </p>
                                 </div>
                                 <ul class="py-1" role="none">
                                     <li>
                                         <NuxtLink
                                             to="#"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            class="block px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-600 dark:hover:text-white"
                                             role="menuitem"
                                             >Settings</NuxtLink
                                         >
@@ -109,7 +120,7 @@ const logout = async () => {
                                     <li>
                                         <NuxtLink
                                             @click="logout"
-                                            class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            class="cursor-pointer block px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-600 dark:hover:text-white"
                                             role="menuitem"
                                             >Sign out</NuxtLink
                                         >
@@ -125,18 +136,24 @@ const logout = async () => {
 
     <aside
         id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -tranzinc-x-full border-r sm:tranzinc-x-0 bg-zinc-950 border-zinc-700"
+        :class="{
+            hidden: !isSidebarOpen,
+        }"
         aria-label="Sidebar"
     >
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div class="flex flex-col justify-between h-full px-3 pb-4 overflow-y-auto bg-zinc-950">
             <ul class="space-y-2 font-medium">
                 <li v-for="item of sidebarItems">
                     <NuxtLink
-                        :to="item.link"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                        :to="item.path"
+                        class="flex items-center p-2 rounded-lg text-white hover:text-primary-300 group"
+                        :class="{
+                            'bg-zinc-700': route.path === item.path,
+                        }"
                     >
                         <i :class="item.icon"></i>
-                        <span class="ms-3">{{ item.label }}</span>
+                        <span class="ms-3 mt-1">{{ item.label }}</span>
                         <span
                             v-if="item.new"
                             class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-300"
@@ -145,10 +162,23 @@ const logout = async () => {
                     </NuxtLink>
                 </li>
             </ul>
+            <div v-if="!user?.emailConfirmed" id="dropdown-cta" class="p-4 mt-6 rounded-lg bg-yellow-50" role="alert">
+                <div class="flex items-center mb-3">
+                    <span class="bg-yellow-100 text-yellow-800 text-sm font-semibold me-2 px-2.5 py-0.5 rounded"
+                        >Attention</span
+                    >
+                </div>
+                <p class="mb-3 text-sm text-gray-800">
+                    You haven't confirmed your email yet. Confirm it to use all features the app provides.
+                </p>
+                <a class="text-sm text-yellow-800 underline font-medium hover:text-yellow-900" href="#"
+                    >Resend email confirmation</a
+                >
+            </div>
         </div>
     </aside>
 
-    <div class="p-4 sm:ml-64 mt-14 text-white">
+    <div class="p-6 sm:ml-64 mt-14 text-white">
         <slot />
     </div>
 </template>

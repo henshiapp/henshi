@@ -1,22 +1,19 @@
 export const getEmailConfirmationBody = (username: string, url: string) => {
     return `
-Olá, <b>${username}</b>!<br /><br />
+Dear ${username},
 
-Temos o prazer de recebê-lo! Antes de começar sua jornada, precisamos verificar sua conta. Siga estas etapas para concluir o processo de verificação:<br /><br />
+Thank you for registering for Henshi! We are excited to have you join us.
 
-Clique no link abaixo para verificar sua conta:<br />
-<a href="${url}">Confirmar email</a><br /><br />
+To confirm your email, please click on the link below to verify your account:
 
-Se o link não for clicável, você pode copiar e colar este URL em seu navegador:<br />
-${url}<br /><br />
+<a href="${url}">Verify account</a><br /><br />
 
-Após a verificação, você terá acesso a todos os recursos gratuitos no Trilha Investidor.<br /><br />
+If you have any questions, feel free to contact us at contact@henshi.com.
 
-Se você encontrar algum problema ou tiver dúvidas, nossa equipe de suporte está aqui para ajudar. Basta entrar em contato conosco em contato@trilhainvestidor.com.br.<br /><br />
+Welcome aboard!
 
-Bem vindo a bordo!<br /><br />
-
-Atenciosamente,<br />
-Equipe Trilha Investidor
-            `;
+Best,
+Henshi Team
+contact@henshi.com
+`;
 };

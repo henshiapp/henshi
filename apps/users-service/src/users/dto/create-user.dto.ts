@@ -1,4 +1,4 @@
-import { UserRole } from '@henshi/models';
+import { UserRole } from '@henshi/types';
 import {
     IsBoolean,
     IsEmail,

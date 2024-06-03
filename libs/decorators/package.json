@@ -5,7 +5,7 @@
     "build": "rm -rf dist && tsc"
   },
   "dependencies": {
-    "@henshi/models": "workspace:*",
+    "@henshi/types": "workspace:*",
     "@nestjs/common": "^10.0.2"
   },
   "type": "commonjs",

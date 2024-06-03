@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import { User } from '@henshi/models';
+import { User } from '@henshi/types';
 
 @Injectable()
 export class UsersService {

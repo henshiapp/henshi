@@ -4,7 +4,6 @@ import { getErrorMessage } from '~/api/utils/get-error-message';
 import { errorToast } from '~/utils/toast';
 
 const toast = useToast();
-const router = useRouter();
 
 interface LoginForm {
     email: string;
@@ -42,7 +41,7 @@ const onSubmit = handleSubmit(async (values: LoginForm) => {
 <template>
     <Toast />
     <div class="flex h-screen">
-        <div class="flex-1 flex justify-center items-center">
+        <div class="hidden md:flex flex-1 justify-center items-center">
             <NuxtLink to="/">
                 <Image src="/assets/images/logo-full.svg" width="300" />
             </NuxtLink>

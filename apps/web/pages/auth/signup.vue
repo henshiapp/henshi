@@ -2,6 +2,7 @@
 import * as Yup from 'yup';
 import { getErrorMessage } from '~/api/utils/get-error-message';
 import { errorToast } from '~/utils/toast';
+import { SignUpResponse } from '@henshi/types';
 
 const toast = useToast();
 const router = useRouter();
@@ -27,7 +28,7 @@ const isLoading = ref(false);
 
 const onSubmit = handleSubmit(async (values: SignUpForm) => {
     isLoading.value = true;
-    const { data, pending, error } = await useApi('/auth/signup', {
+    const { data, error } = await useApi<SignUpResponse>('/auth/signup', {
         method: 'POST',
         body: values,
     });
@@ -37,7 +38,11 @@ const onSubmit = handleSubmit(async (values: SignUpForm) => {
         return errorToast(toast, error);
     }
     if (data.value) {
-        router.push('/auth/login');
+        successToast(toast, data.value.message);
+
+        setTimeout(() => {
+            router.push('/auth/login');
+        }, 4000);
     }
 });
 </script>
@@ -45,7 +50,7 @@ const onSubmit = handleSubmit(async (values: SignUpForm) => {
 <template>
     <Toast />
     <div class="flex h-screen">
-        <div class="flex-1 flex justify-center items-center">
+        <div class="flex-1 hidden md:flex justify-center items-center">
             <NuxtLink to="/">
                 <Image src="/assets/images/logo-full.svg" width="300" />
             </NuxtLink>
@@ -69,7 +74,7 @@ const onSubmit = handleSubmit(async (values: SignUpForm) => {
                                 v-model="email.value.value"
                                 :errorMessage="email.errorMessage.value"
                             />
-                            <HInputText
+                            <HInputPassword
                                 label="Password"
                                 v-model="password.value.value"
                                 :errorMessage="password.errorMessage.value"

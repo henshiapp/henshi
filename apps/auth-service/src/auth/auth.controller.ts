@@ -2,21 +2,21 @@ import { Controller, Get, Post, Body, Req, UseGuards, Res, BadRequestException, 
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
-import { CreateUserDto } from '../users/dto/create-user.dto';
 import { AccessTokenGuard } from '../shared/guards/accessToken.guard';
 import { RefreshTokenGuard } from '../shared/guards/refreshToken.guard';
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from './utils/cookieOptions';
 import { MessagePattern } from '@nestjs/microservices';
+import { SignUpDto, SignUpResponse } from '@henshi/types';
 
 @Controller('/api/auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('signup')
-    async signup(@Body() createUserDto: CreateUserDto) {
-        const { id, name, email } = await this.authService.signUp(createUserDto);
+    async signup(@Body() signUpDto: SignUpDto) {
+        const { id, name, email } = await this.authService.signUp(signUpDto);
         // await this.authService.sendEmailConfirmation(id, name, email);
-        return { status: 'success', message: 'Cadastro realizado com sucesso' };
+        return new SignUpResponse();
     }
 
     @Post('login')
@@ -56,16 +56,18 @@ export class AuthController {
         const savedToken = await this.authService.getEmailConfirmationToken(userId);
 
         if (!savedToken) {
-            throw new BadRequestException('Token expirado. Por favor realize o cadastro novamente.');
+            throw new BadRequestException(
+                'Token expired. Please access your account and resend a new email confirmation.',
+            );
         }
 
         if (savedToken !== verificationToken) {
-            throw new BadRequestException('Token inválido');
+            throw new BadRequestException('Invalid token');
         }
 
         await this.authService.emailConfirmed(userId);
 
-        return { status: 'success', message: 'Email verificado' };
+        return { status: 'success', message: 'Email verified successfully' };
     }
 
     @UseGuards(AccessTokenGuard)
@@ -77,7 +79,13 @@ export class AuthController {
 
         await this.authService.sendEmailConfirmation(userId, userName, userEmail);
 
-        return { status: 'success', message: 'Um novo email de confirmação foi enviado' };
+        return { status: 'success', message: 'A new confirmation email was sent' };
+    }
+
+    @UseGuards(AccessTokenGuard)
+    @Get('me')
+    async me(@Req() req: Request) {
+        return req.user;
     }
 
     @MessagePattern('me')

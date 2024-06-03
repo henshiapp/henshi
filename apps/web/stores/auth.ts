@@ -1,7 +1,8 @@
-import { acceptHMRUpdate, defineStore } from 'pinia';
+import { defineStore } from 'pinia';
+import type { UserJwt } from '@henshi/types';
 
 export type AuthStoreState = {
-    user: any;
+    user: UserJwt | null;
 };
 
 export const useAuthStore = defineStore({
@@ -9,9 +10,13 @@ export const useAuthStore = defineStore({
     state: (): AuthStoreState => ({
         user: null,
     }),
-    getters: {},
+    getters: {
+        firstName({ user }) {
+            return user?.name.split(' ').at(0);
+        },
+    },
     actions: {
-        setAuthUser(user: any) {
+        setAuthUser(user: AuthStoreState['user']) {
             this.user = user;
         },
     },

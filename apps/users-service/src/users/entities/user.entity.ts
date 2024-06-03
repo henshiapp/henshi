@@ -1,22 +1,13 @@
-import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    Index,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 export enum UserRole {
     FREE_USER = 'FREE_USER',
-    BASIC_USER = 'BASIC_USER',
-    PREMIUM_USER = 'PREMIUM_USER',
     ADMIN = 'ADMIN',
 }
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column({ length: 255 })
@@ -29,7 +20,7 @@ export class User {
     @Column()
     password: string;
 
-    @Column({ type: "varchar", enum: UserRole, default: UserRole.FREE_USER })
+    @Column({ type: 'varchar', enum: UserRole, default: UserRole.FREE_USER })
     role: UserRole;
 
     @Column({ default: false })
@@ -44,4 +35,3 @@ export class User {
     @UpdateDateColumn()
     updatedAt: Date;
 }
-

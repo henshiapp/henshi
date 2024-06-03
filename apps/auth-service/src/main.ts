@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -13,6 +14,7 @@ async function bootstrap() {
         credentials: true,
     });
     app.use(cookieParser());
+    app.use(helmet());
 
     app.connectMicroservice({
         transport: Transport.TCP,
