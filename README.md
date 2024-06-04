@@ -45,7 +45,7 @@ flowchart LR
     AS <-.->|gRPC| US & MMBS
     US <-.->|gRPC| MMBS
     subgraph Backend
-        RMQ <-.->|AMQP| NS & AS
+        RMQ <-.->|AMQP| AS
         subgraph AS [Auth service]
             direction LR
             A
@@ -53,10 +53,6 @@ flowchart LR
         subgraph US [Users service]
             direction LR
             U --> U-P
-        end
-        subgraph NS [Notification service]
-            direction LR
-            N
         end
         subgraph MMBS [Muscular Memory Builder service]
             direction LR
