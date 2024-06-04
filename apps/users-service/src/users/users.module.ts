@@ -19,15 +19,15 @@ import { User } from './entities/user.entity';
                                 host: configService.get('microservices.auth.host'),
                                 port: configService.get('microservices.auth.port'),
                             },
-                        }
+                        };
                     },
-                    inject: [ConfigService]
+                    inject: [ConfigService],
                 },
-            ]
+            ],
         }),
         TypeOrmModule.forFeature([User]),
     ],
     controllers: [UsersController],
     providers: [UsersService],
 })
-export class UserModule { }
+export class UserModule {}

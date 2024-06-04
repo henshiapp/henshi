@@ -12,7 +12,7 @@ export default () => ({
         users: {
             host: process.env.MICROSERVICE_HOST || 'localhost',
             port: parseInt(process.env.MICROSERVICE_PORT) || 4010,
-        }
+        },
     },
     client: {
         url: process.env.FRONTEND_URL,

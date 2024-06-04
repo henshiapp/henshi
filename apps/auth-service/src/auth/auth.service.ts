@@ -147,7 +147,7 @@ export class AuthService {
         const url = `${this.configService.get('client.url')}/verify-account?token=${verificationToken}`;
 
         // await emailTransporter.sendMail({
-        //     from: '"Trilha Investidor" <info@trilhainvestidor.com.br>',
+        //     from: '"Henshi" <info@trilhainvestidor.com.br>',
         //     to: userEmail,
         //     subject: '[Henshi] Verify your account',
         //     html: getEmailConfirmationBody(userName, url),

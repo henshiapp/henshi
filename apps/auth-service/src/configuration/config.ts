@@ -6,13 +6,13 @@ export default () => ({
     port: parseInt(process.env.PORT, 10) || 3000,
     microservice: {
         auth: {
-            host: process.env.MICROSERVICE_HOST || 'localhost',
-            port: parseInt(process.env.MICROSERVICE_PORT) || 4000,
+            host: process.env.AUTH_MICROSERVICE_HOST || 'localhost',
+            port: parseInt(process.env.AUTH_MICROSERVICE_PORT) || 4000,
         },
         users: {
-            host: process.env.MICROSERVICE_HOST || 'localhost',
-            port: parseInt(process.env.MICROSERVICE_PORT) || 4010,
-        }
+            host: process.env.USERS_MICROSERVICE_HOST || 'localhost',
+            port: parseInt(process.env.USERS_MICROSERVICE_PORT) || 4010,
+        },
     },
     client: {
         url: process.env.FRONTEND_URL,

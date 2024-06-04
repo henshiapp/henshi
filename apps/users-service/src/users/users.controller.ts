@@ -8,7 +8,7 @@ import { User } from './entities/user.entity';
 
 @Controller('/api/users')
 export class UsersController {
-    constructor(private readonly usersService: UsersService) { }
+    constructor(private readonly usersService: UsersService) {}
 
     @UseGuards(AuthGuard)
     @Get('me')

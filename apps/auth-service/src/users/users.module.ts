@@ -16,15 +16,14 @@ import { ConfigService } from '@nestjs/config';
                                 host: configService.get('microservices.users.host'),
                                 port: configService.get('microservices.users.port'),
                             },
-                        }
+                        };
                     },
-                    inject: [ConfigService]
-
+                    inject: [ConfigService],
                 },
-            ]
+            ],
         }),
     ],
     controllers: [],
     providers: [UsersService],
 })
-export class UserModule { }
+export class UserModule {}

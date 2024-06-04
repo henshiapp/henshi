@@ -27,13 +27,7 @@ export default defineNuxtConfig({
         host: '0.0.0.0',
         port: 4200,
     },
-    modules: [
-        '@nuxtjs/tailwindcss',
-        'nuxt-primevue',
-        '@vee-validate/nuxt',
-        '@pinia/nuxt',
-        "nuxt-viewport"
-    ],
+    modules: ['@nuxtjs/tailwindcss', 'nuxt-primevue', '@vee-validate/nuxt', '@pinia/nuxt', 'nuxt-viewport'],
     typescript: {
         typeCheck: true,
     },

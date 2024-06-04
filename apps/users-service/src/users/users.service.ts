@@ -10,7 +10,7 @@ import { User } from './entities/user.entity';
 export class UsersService {
     constructor(
         @InjectRepository(User)
-        private readonly usersRepository: Repository<User>
+        private readonly usersRepository: Repository<User>,
     ) {}
 
     create(createUserDto: CreateUserDto) {
@@ -19,15 +19,7 @@ export class UsersService {
 
     findAll(query: PaginateQuery): Promise<Paginated<User>> {
         return paginate(query, this.usersRepository, {
-            sortableColumns: [
-                'id',
-                'name',
-                'email',
-                'role',
-                'emailConfirmed',
-                'createdAt',
-                'updatedAt',
-            ],
+            sortableColumns: ['id', 'name', 'email', 'role', 'emailConfirmed', 'createdAt', 'updatedAt'],
             searchableColumns: ['name', 'email', 'role'],
             select: ['id', 'name', 'email', 'role', 'emailConfirmed', 'createdAt', 'updatedAt'],
         });
