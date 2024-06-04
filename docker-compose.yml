@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:15.1
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-henshi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-henshi}
+      POSTGRES_DBS: 'users_service'
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - apps
+
+  redis:
+    image: redis:7.2
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
+    command: redis-server --requirepass ${REDIS_PASSWORD:-henshi}
+    volumes:
+      - redis:/data
+    networks:
+      - apps
+
+  nginx:
+    build:
+      context: infra/nginx
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    environment:
+      WEB: ${WEB_HOST:-host.docker.internal}
+      WEB_PORT: ${WEB_PORT:-4200}
+      AUTH_SERVICE: ${AUTH_SERVICE_HOST:-host.docker.internal}
+      AUTH_SERVICE_PORT: ${AUTH_SERVICE_PORT:-3000}
+      USERS_SERVICE: ${USERS_SERVICE_HOST:-host.docker.internal}
+      USERS_SERVICE_PORT: ${USERS_SERVICE_PORT:-3010}
+    ports:
+      - "8080:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - apps
+
+volumes:
+  postgres:
+  redis:
+
+networks:
+  apps:
+    driver: bridge
