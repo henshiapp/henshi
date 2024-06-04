@@ -7,7 +7,7 @@ export const databaseConfig = {
     url: process.env.DATABASE_URL,
     synchronize: false,
     entities: ['dist/**/*.entity{.ts,.js}'],
-    migrations: ['src/database/migrations/**/*.ts'],
+    migrations: ['dist/database/migrations/**/*.js'],
     migrationsTableName: 'migrations',
 } as DataSourceOptions;
 

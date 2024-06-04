@@ -22,6 +22,7 @@
     "nuxt-primevue": "^3.0.0",
     "nuxt-viewport": "^2.1.5",
     "primevue": "^3.52.0",
+    "ufo": "^1.5.3",
     "vee-validate": "^4.12.8",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",

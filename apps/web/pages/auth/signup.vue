@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import * as Yup from 'yup';
-import { getErrorMessage } from '~/api/utils/get-error-message';
 import { errorToast } from '~/utils/toast';
-import { SignUpResponse } from '@henshi/types';
 
 const toast = useToast();
 const router = useRouter();
@@ -28,7 +26,7 @@ const isLoading = ref(false);
 
 const onSubmit = handleSubmit(async (values: SignUpForm) => {
     isLoading.value = true;
-    const { data, error } = await useApi<SignUpResponse>('/auth/signup', {
+    const { data, error } = await useApi<any>('/auth/signup', {
         method: 'POST',
         body: values,
     });
