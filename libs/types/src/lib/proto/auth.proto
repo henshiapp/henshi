@@ -1,0 +1,25 @@
+syntax = 'proto3';
+
+package auth;
+
+service AuthService {
+  rpc Me(MeRequest) returns (JwtUserOrUndefined) {}
+}
+
+message MeRequest {
+  optional string jwt = 1;
+}
+
+message JwtUser {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string role = 4;
+  bool emailConfirmed = 5;
+  uint32 iat = 6;
+  uint32 exp = 7;
+}
+
+message JwtUserOrUndefined {
+  optional JwtUser user = 1;
+}

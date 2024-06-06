@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 export enum UserRole {
     FREE_USER = 'FREE_USER',
@@ -18,6 +19,7 @@ export class User {
     email: string;
 
     @Column()
+    @Exclude()
     password: string;
 
     @Column({ type: 'varchar', enum: UserRole, default: UserRole.FREE_USER })
@@ -27,7 +29,7 @@ export class User {
     emailConfirmed: boolean;
 
     @Column({ nullable: true })
-    refreshToken: string;
+    refreshToken?: string;
 
     @CreateDateColumn()
     createdAt: Date;

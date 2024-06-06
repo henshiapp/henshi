@@ -23,7 +23,7 @@ const isLoading = ref(false);
 
 const onSubmit = handleSubmit(async (values: LoginForm) => {
     isLoading.value = true;
-    const { data, pending, error } = await useApi<{ accessToken: string }>('/auth/login', {
+    const { data, error } = await useApi<{ accessToken: string }>('/auth/login', {
         method: 'POST',
         body: values,
     });

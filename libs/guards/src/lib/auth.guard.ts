@@ -1,22 +1,29 @@
-import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { CanActivate, ExecutionContext, Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { Request } from 'express';
+import { AUTH_SERVICE_NAME, AuthServiceClient } from '@henshi/types';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements OnModuleInit, CanActivate {
+    private authService: AuthServiceClient;
+
     constructor(
-        @Inject('AUTH_SERVICE')
-        private readonly authClient: ClientProxy,
+        @Inject(AUTH_SERVICE_NAME)
+        private readonly authClient: ClientGrpc,
     ) {}
+
+    onModuleInit() {
+        this.authService = this.authClient.getService<AuthServiceClient>(AUTH_SERVICE_NAME);
+    }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req: Request = context.switchToHttp().getRequest();
 
         try {
-            const user = await firstValueFrom(this.authClient.send('me', { jwt: req.cookies.access_token }));
+            const { user } = await firstValueFrom(this.authService.me({ jwt: req.cookies.access_token }));
             req.user = user;
-            return user;
+            return true;
         } catch (err) {
             return false;
         }

@@ -25,6 +25,8 @@
     "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./src/database/data-source.ts"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.10.8",
+    "@grpc/proto-loader": "^0.7.13",
     "@henshi/decorators": "workspace:*",
     "@henshi/guards": "workspace:*",
     "@henshi/types": "workspace:*",
@@ -35,6 +37,7 @@
     "@nestjs/microservices": "^10.3.8",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
@@ -65,6 +68,7 @@
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
+    "ts-proto": "^1.156.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.3"
   },

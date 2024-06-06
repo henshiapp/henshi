@@ -5,11 +5,10 @@ import { AuthDto } from './dto/auth.dto';
 import { AccessTokenGuard } from '../shared/guards/accessToken.guard';
 import { RefreshTokenGuard } from '../shared/guards/refreshToken.guard';
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from './utils/cookieOptions';
-import { MessagePattern } from '@nestjs/microservices';
 import { SignUpDto, SignUpResponse } from '@henshi/types';
 
 @Controller('/api/auth')
-export class AuthController {
+export class AuthRestController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('signup')
@@ -86,12 +85,5 @@ export class AuthController {
     @Get('me')
     async me(@Req() req: Request) {
         return req.user;
-    }
-
-    @MessagePattern('me')
-    async isLoggedIn({ jwt }: { jwt?: string }) {
-        if (!jwt) return false;
-
-        return this.authService.getTokenPayload(jwt);
     }
 }
