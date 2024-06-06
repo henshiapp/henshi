@@ -1,29 +1,38 @@
-import { BadRequestException, ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import { AuthDto } from './dto/auth.dto';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { SignUpDto, User } from '@henshi/types';
+import { SignUpDto, User, USERS_SERVICE_NAME, UsersServiceClient } from '@henshi/types';
 import { ConfigService } from '@nestjs/config';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import * as crypto from 'node:crypto';
+import { ClientGrpc } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 // import { emailTransporter } from '../mail/transport';
 // import { getEmailConfirmationBody } from '../mail/body';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
+    private usersService: UsersServiceClient;
+
     constructor(
         @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-        private readonly usersService: UsersService,
+        @Inject(USERS_SERVICE_NAME) private readonly client: ClientGrpc,
         private readonly jwtService: JwtService,
         private readonly configService: ConfigService,
     ) {}
 
-    async signUp(signUpDto: SignUpDto): Promise<User> {
-        const userExists = await this.usersService.findOne({
-            email: signUpDto.email,
-        });
+    onModuleInit() {
+        this.usersService = this.client.getService<UsersServiceClient>(USERS_SERVICE_NAME);
+    }
+
+    async signUp(signUpDto: SignUpDto) {
+        const { user: userExists } = await firstValueFrom(
+            this.usersService.findOne({
+                email: signUpDto.email,
+            }),
+        );
 
         if (userExists) {
             throw new BadRequestException('User already exists');
@@ -31,10 +40,13 @@ export class AuthService {
 
         const hash = await this.hashData(signUpDto.password);
 
-        const newUser = await this.usersService.create({
-            ...signUpDto,
-            password: hash,
-        });
+        const { user: newUser } = await firstValueFrom(
+            this.usersService.create({
+                ...signUpDto,
+                password: hash,
+            }),
+        );
+
         const tokens = await this.getTokens(newUser);
 
         await this.updateRefreshToken(newUser.id, tokens.refreshToken);
@@ -43,7 +55,7 @@ export class AuthService {
     }
 
     async signIn(data: AuthDto) {
-        const user = await this.usersService.findOne({ email: data.email });
+        const { user } = await firstValueFrom(this.usersService.findOne({ email: data.email }));
 
         if (!user) throw new BadRequestException('The credentials are invalid');
 
@@ -59,7 +71,7 @@ export class AuthService {
     }
 
     async logout(userId: string) {
-        return this.usersService.update(userId, { refreshToken: null });
+        return this.usersService.update({ id: userId, refreshToken: null });
     }
 
     hashData(data: string) {
@@ -68,9 +80,12 @@ export class AuthService {
 
     async updateRefreshToken(userId: string, refreshToken: string) {
         const hashedRefreshToken = await this.hashData(refreshToken);
-        await this.usersService.update(userId, {
-            refreshToken: hashedRefreshToken,
-        });
+        await firstValueFrom(
+            this.usersService.update({
+                id: userId,
+                refreshToken: hashedRefreshToken,
+            }),
+        );
     }
 
     async getTokens(user: User) {
@@ -114,7 +129,7 @@ export class AuthService {
     }
 
     async refreshTokens(userId: string, refreshToken: string) {
-        const user = await this.usersService.findOne({ id: userId });
+        const { user } = await firstValueFrom(this.usersService.findOne({ id: userId }));
 
         if (!user || !user.refreshToken) throw new ForbiddenException('Access Denied');
 
@@ -133,9 +148,10 @@ export class AuthService {
 
     async emailConfirmed(userId: string) {
         await this.cacheManager.del('emailConfirmationToken:' + userId);
-        await this.usersService.update(userId, { emailConfirmed: true });
+        await firstValueFrom(this.usersService.update({ id: userId, emailConfirmed: true }));
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async sendEmailConfirmation(userId: string, userName: string, userEmail: string) {
         const A_DAY_IN_SECONDS = 86_400;
         const verificationToken = crypto.randomBytes(64).toString('hex');
@@ -144,6 +160,7 @@ export class AuthService {
             ttl: A_DAY_IN_SECONDS,
         } as any);
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const url = `${this.configService.get('client.url')}/verify-account?token=${verificationToken}`;
 
         // await emailTransporter.sendMail({

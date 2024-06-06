@@ -14,7 +14,7 @@ Henshi is a webapp based on microservices architecture, it uses Vue.js as its pr
 - [PostgreSQL](https://postgresql.org) as its SQL database
 - [Redis](https://redis.io) as cache and key-value database
 - [Nginx](https://nginx.org) as a reverse proxy
-- [gRPC](https://grpc.io) as an synchronous method of communication between the services (🚧 **In progress**)
+- [gRPC](https://grpc.io) as a synchronous method of communication between the services
 - [RabbitMQ](https://rabbitmq.com) as an asynchronous method of communication between the services (🚧 **In progress**)
 - [Docker](https://docker.com) as its container management tool 
 - [Kubernetes](https://kubernetes.io) as its container orchestration tool (🚧 **In progress**)
@@ -31,6 +31,7 @@ flowchart LR
     FE(fa:fa-twitter Frontend)
     LB(Reverse proxy)
     A(Auth API)
+    A-R[(Redis)]
     U(Users API)
     U-P[(PostgreSQL)]
     N(Notification API)
@@ -48,7 +49,7 @@ flowchart LR
         RMQ <-.->|AMQP| AS
         subgraph AS [Auth service]
             direction LR
-            A
+            A --> A-R
         end
         subgraph US [Users service]
             direction LR

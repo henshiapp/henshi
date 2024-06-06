@@ -12,7 +12,7 @@ const sidebarItems = [
     },
 ];
 
-const { user } = useAuthStore();
+const { user, setAuthUser } = useAuthStore();
 const toast = useToast();
 const route = useRoute();
 const viewport = useViewport();
@@ -40,6 +40,7 @@ const logout = async () => {
         return errorToast(toast, error);
     }
 
+    setAuthUser(null);
     await navigateTo('/');
 };
 </script>

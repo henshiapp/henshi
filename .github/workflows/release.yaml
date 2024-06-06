@@ -1,4 +1,4 @@
-name: CI
+name: Release
 
 on:
   push:
@@ -6,7 +6,11 @@ on:
       - main
 
 jobs:
-  build:
+  release:
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -25,8 +29,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
-      - name: Install development dependencies
-        run: pnpm install --dev --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm add -g semantic-release @semantic-release/git @semantic-release/github
 
-      - name: Format
-        run: pnpm format
+      - name: Release
+        run: pnpm exec semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

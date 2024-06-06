@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { User } from './entities/user.entity';
+import { OptionalUser } from '@henshi/types';
 
 @Injectable()
 export class UsersService {
@@ -29,8 +29,9 @@ export class UsersService {
         return this.usersRepository.findOneBy(query);
     }
 
-    update(id: string, updateUserDto: UpdateUserDto) {
-        return this.usersRepository.update({ id }, updateUserDto);
+    update(data: OptionalUser) {
+        const { id, ...rest } = data;
+        return this.usersRepository.update({ id }, rest);
     }
 
     remove(id: string) {

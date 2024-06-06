@@ -1,0 +1,50 @@
+syntax = 'proto3';
+
+package users;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service UsersService {
+  rpc FindOne(OptionalUser) returns (UserOrUndefined) {}
+  rpc Create(CreateUserRequest) returns (UserOrUndefined) {}
+  rpc Update(OptionalUser) returns (google.protobuf.Empty) {}
+}
+
+message OptionalUser {
+  optional string id = 1;
+  optional string name = 2;
+  optional string email = 3;
+  optional UserRole role = 4;
+  optional bool emailConfirmed = 5;
+  optional string refreshToken = 6;
+  optional google.protobuf.Timestamp createdAt = 7;
+  optional google.protobuf.Timestamp updatedAt = 8;
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+enum UserRole {
+  FREE_USER = 0;
+  ADMIN = 1;
+}
+
+message User {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  UserRole role = 5;
+  bool emailConfirmed = 6;
+  optional string refreshToken = 7;
+  google.protobuf.Timestamp createdAt = 8;
+  google.protobuf.Timestamp updatedAt = 9;
+}
+
+message UserOrUndefined {
+  optional User user = 1;
+}
