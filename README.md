@@ -31,6 +31,7 @@ flowchart LR
     FE(fa:fa-twitter Frontend)
     LB(Reverse proxy)
     A(Auth API)
+    A-R[(Redis)]
     U(Users API)
     U-P[(PostgreSQL)]
     N(Notification API)
@@ -48,7 +49,7 @@ flowchart LR
         RMQ <-.->|AMQP| AS
         subgraph AS [Auth service]
             direction LR
-            A
+            A --> A-R
         end
         subgraph US [Users service]
             direction LR
