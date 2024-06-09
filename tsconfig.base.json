@@ -19,17 +19,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    // "paths": {
-    //   "@henshi/decorators": [
-    //     "libs/decorators/src/index.ts"
-    //   ],
-    //   "@henshi/guards": [
-    //     "libs/guards/src/index.ts"
-    //   ],
-    //   "@henshi/types": [
-    //     "libs/models/src/index.ts"
-    //   ]
-    // }
+    "paths": {
+      "@henshi/types": [
+        "libs/types/src/index.ts"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
