@@ -22,7 +22,11 @@ export class AuthGuard implements OnModuleInit, CanActivate {
 
         try {
             const { user } = await firstValueFrom(this.authService.me({ jwt: req.cookies.access_token }));
+
+            if (!user) return false;
+
             req.user = user;
+
             return true;
         } catch (err) {
             return false;

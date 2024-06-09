@@ -5,8 +5,8 @@ import { Observable } from "rxjs";
 import { Empty } from "../../../google/protobuf/empty";
 
 export enum UserRole {
-  FREE_USER = "FREE_USER",
-  ADMIN = "ADMIN",
+  FREE_USER = 0,
+  ADMIN = 1,
 }
 
 export interface OptionalUser {

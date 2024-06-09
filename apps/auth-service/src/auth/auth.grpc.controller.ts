@@ -10,6 +10,6 @@ export class AuthGrpcController implements AuthServiceController {
     me({ jwt }: MeRequest): JwtUserOrUndefined {
         if (!jwt) return { user: undefined };
 
-        return this.authService.getTokenPayload(jwt);
+        return { user: this.authService.getTokenPayload(jwt) };
     }
 }

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "proto": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_opt=nestJs=true --ts_proto_opt=oneof=unions --ts_proto_opt=unrecognizedEnum=false --ts_proto_opt=stringEnums=true --ts_proto_opt=useDate=true --ts_proto_opt=exportCommonSymbols=false --ts_proto_out=./src/lib/proto/generated ./src/lib/proto/*.proto && pnpm build"
+    "proto": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_opt=nestJs=true --ts_proto_opt=oneof=unions --ts_proto_opt=unrecognizedEnum=false --ts_proto_opt=useDate=true --ts_proto_opt=exportCommonSymbols=false --ts_proto_out=./src/lib/proto/generated ./src/lib/proto/*.proto && pnpm build"
   },
   "dependencies": {
     "class-validator": "^0.14.1",
@@ -14,7 +14,6 @@
   "typings": "dist/index.d.ts",
   "private": true,
   "devDependencies": {
-    "@types/protobufjs": "^6.0.0",
     "ts-proto": "^1.156.2"
   }
 }

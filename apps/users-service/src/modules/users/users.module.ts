@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersRestController } from './users.rest.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { User } from './entities/user.entity';
 import { UsersGrpcController } from './users.grpc.controller';
 import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from '@henshi/types';
 import { join } from 'node:path/win32';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 @Module({
     imports: [
@@ -20,7 +20,10 @@ import { join } from 'node:path/win32';
                             transport: Transport.GRPC,
                             options: {
                                 package: AUTH_PACKAGE_NAME,
-                                protoPath: join(__dirname, '../../node_modules/@henshi/types/src/lib/proto/auth.proto'),
+                                protoPath: join(
+                                    __dirname,
+                                    '../../../node_modules/@henshi/types/src/lib/proto/auth.proto',
+                                ),
                                 url:
                                     configService.get('microservices.auth.host') +
                                     ':' +
@@ -32,7 +35,7 @@ import { join } from 'node:path/win32';
                 },
             ],
         }),
-        TypeOrmModule.forFeature([User]),
+        MikroOrmModule.forFeature([User]),
     ],
     controllers: [UsersRestController, UsersGrpcController],
     providers: [UsersService],

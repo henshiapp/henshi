@@ -22,6 +22,7 @@ export class UsersGrpcController implements UsersServiceController {
     }
 
     async update(request: OptionalUser): Promise<void> {
-        await this.usersService.update(request);
+        const { id, ...rest } = request;
+        await this.usersService.update(id, rest);
     }
 }
