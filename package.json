@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
+    "build": "nx run-many --target=build",
+    "dev": "nx run-many --target=dev --all --parallel",
+    "lint": "nx run-many --target=lint --all --parallel",
     "format": "prettier --write \"**/*.{ts,vue,css}\"",
     "migrate": "pnpm -r run migration:run",
     "docker:dev:up": "docker compose up -d"
@@ -15,7 +15,7 @@
     "@types/node": "~20.13.0",
     "eslint": "^9.4.0",
     "prettier": "^3.3.0",
-    "turbo": "^1.13.3",
-    "typescript": "~5.4.2"
+    "typescript": "~5.4.2",
+    "nx": "19.2.2"
   }
 }

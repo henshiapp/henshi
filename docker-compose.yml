@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
     environment:
       WEB: ${WEB_HOST:-host.docker.internal}
-      WEB_PORT: ${WEB_PORT:-4200}
+      WEB_PORT: ${WEB_PORT:-5173}
       AUTH_SERVICE: ${AUTH_SERVICE_HOST:-host.docker.internal}
       AUTH_SERVICE_PORT: ${AUTH_SERVICE_PORT:-3000}
       USERS_SERVICE: ${USERS_SERVICE_HOST:-host.docker.internal}

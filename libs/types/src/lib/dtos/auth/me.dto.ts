@@ -2,7 +2,7 @@ export interface UserJwt {
     sub: string;
     name: string;
     email: string;
-    role: string;
+    role: number;
     emailConfirmed: boolean;
     iat: number;
     exp: number;

@@ -17,6 +17,7 @@ async function bootstrap() {
     });
     app.use(cookieParser());
     app.use(helmet());
+    app.enableShutdownHooks();
 
     app.connectMicroservice({
         transport: Transport.GRPC,

@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module, Scope } from '@nestjs/common';
 import config from './configuration/config';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './users/users.module';
-import { databaseConfig } from './database/data-source';
+import { UserModule } from './modules/users/users.module';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import mikroOrmConfig from './database/mikro-orm.config';
 
 @Module({
     imports: [
@@ -12,7 +12,7 @@ import { databaseConfig } from './database/data-source';
             envFilePath: `../.env`,
             load: [config],
         }),
-        TypeOrmModule.forRoot(databaseConfig),
+        MikroOrmModule.forRoot({ ...mikroOrmConfig, registerRequestContext: false, scope: Scope.REQUEST }),
         UserModule,
     ],
     controllers: [],

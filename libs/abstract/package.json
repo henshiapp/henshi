@@ -1,0 +1,17 @@
+{
+  "name": "@henshi/abstract",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "rm -rf dist && tsc"
+  },
+  "dependencies": {
+    "@henshi/types": "workspace:*",
+    "@henshi/decorators": "workspace:*",
+    "@mikro-orm/postgresql": "^6.2.9",
+    "@nestjs/common": "^10.3.9"
+  },
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "private": true
+}
