@@ -1,6 +1,7 @@
-import { FetchError } from 'ofetch';
+import { AxiosError } from 'axios';
 
-export const getErrorMessage = (error: FetchError<any> | null) => {
-    const message = Array.isArray(error?.data.message) ? error?.data.message.join(', ') : error?.data.message;
+export const getErrorMessage = (error: AxiosError<any>) => {
+    let message = error.response?.data?.message;
+    message = Array.isArray(message) ? message.join(', ') : message;
     return message || 'Por favor, tente novamente';
 };

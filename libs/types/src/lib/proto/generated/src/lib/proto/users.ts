@@ -9,6 +9,15 @@ export enum UserRole {
   ADMIN = 1,
 }
 
+export interface ComparePasswordsRequest {
+  userId: string;
+  password: string;
+}
+
+export interface ComparePasswordsResponse {
+  match: boolean;
+}
+
 export interface OptionalUser {
   id?: string | undefined;
   name?: string | undefined;
@@ -59,6 +68,8 @@ export interface UsersServiceClient {
   create(request: CreateUserRequest): Observable<UserOrUndefined>;
 
   update(request: OptionalUser): Observable<Empty>;
+
+  comparePasswords(request: ComparePasswordsRequest): Observable<ComparePasswordsResponse>;
 }
 
 export interface UsersServiceController {
@@ -67,11 +78,15 @@ export interface UsersServiceController {
   create(request: CreateUserRequest): Promise<UserOrUndefined> | Observable<UserOrUndefined> | UserOrUndefined;
 
   update(request: OptionalUser): void;
+
+  comparePasswords(
+    request: ComparePasswordsRequest,
+  ): Promise<ComparePasswordsResponse> | Observable<ComparePasswordsResponse> | ComparePasswordsResponse;
 }
 
 export function UsersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findOne", "create", "update"];
+    const grpcMethods: string[] = ["findOne", "create", "update", "comparePasswords"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UsersService", method)(constructor.prototype[method], method, descriptor);

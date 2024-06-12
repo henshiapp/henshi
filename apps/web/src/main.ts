@@ -4,6 +4,7 @@ import '@tabler/icons-webfont/dist/tabler-icons.css';
 import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 import { createPinia } from 'pinia';
 import { VueQueryPlugin } from '@tanstack/vue-query';
 import Aura from './presets/aura';
@@ -18,6 +19,7 @@ app.use(PrimeVue, {
     unstyled: true,
     pt: Aura,
 });
+app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
 

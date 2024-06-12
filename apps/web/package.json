@@ -9,11 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@henshi/abstract": "workspace:*",
     "@henshi/types": "workspace:*",
     "@tabler/icons-webfont": "^3.5.0",
     "@tanstack/vue-query": "^5.41.0",
     "@vee-validate/yup": "^4.12.8",
     "axios": "^1.7.2",
+    "date-fns": "^3.6.0",
     "pinia": "^2.1.7",
     "primevue": "^3.52.0",
     "rollup-plugin-polyfill-node": "^0.13.0",

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useAuthStore } from '../stores/auth';
-import { errorToast } from '../utils/toast';
-import { api } from '../api/api.ts';
-import { useMutation, useQuery } from '@tanstack/vue-query';
+import { useAuthStore } from '../../stores/auth';
+import { errorToast } from '../../utils/toast';
+import { api } from '../../api/api.ts';
+import { useMutation } from '@tanstack/vue-query';
 import { useToast } from 'primevue/usetoast';
 import Image from 'primevue/image';
 import Toast from 'primevue/toast';
@@ -17,6 +17,17 @@ const sidebarItems = [
         icon: 'ti ti-dashboard',
         path: '/app/dashboard',
         new: false,
+    },
+    {
+        label: 'Admin',
+        children: [
+            {
+                label: 'Users',
+                icon: 'ti ti-user',
+                path: '/app/admin/users',
+                new: false,
+            },
+        ],
     },
 ];
 
@@ -153,10 +164,26 @@ const logout = async () => {
         }"
         aria-label="Sidebar"
     >
-        <div class="flex flex-col justify-between h-full px-3 pb-4 overflow-y-auto bg-zinc-950">
+        <div class="flex text-white flex-col justify-between h-full px-3 pb-4 overflow-y-auto bg-zinc-950">
             <ul class="space-y-2 font-medium">
                 <li v-for="item of sidebarItems">
+                    <div v-if="item.children">
+                        <p class="mb-2">{{ item.label }}</p>
+                        <div v-for="child of item.children">
+                            <RouterLink
+                                :to="child.path"
+                                class="flex items-center p-2 my-2 rounded-lg text-white hover:text-primary-300 group"
+                                :class="{
+                                    'bg-zinc-700': route.path === child.path,
+                                }"
+                            >
+                                <i :class="child.icon"></i>
+                                <span class="ms-3 mt-1">{{ child.label }}</span>
+                            </RouterLink>
+                        </div>
+                    </div>
                     <RouterLink
+                        v-else
                         :to="item.path"
                         class="flex items-center p-2 rounded-lg text-white hover:text-primary-300 group"
                         :class="{

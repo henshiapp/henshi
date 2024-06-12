@@ -6,6 +6,8 @@ import {
     UsersServiceControllerMethods,
     OptionalUser,
     UserOrUndefined,
+    ComparePasswordsRequest,
+    ComparePasswordsResponse,
 } from '@henshi/types';
 
 @Controller()
@@ -24,5 +26,9 @@ export class UsersGrpcController implements UsersServiceController {
     async update(request: OptionalUser): Promise<void> {
         const { id, ...rest } = request;
         await this.usersService.update(id, rest);
+    }
+
+    async comparePasswords(request: ComparePasswordsRequest): Promise<ComparePasswordsResponse> {
+        return { match: await this.usersService.comparePasswords(request.userId, request.password) };
     }
 }

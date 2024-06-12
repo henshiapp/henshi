@@ -6,12 +6,13 @@ import Toast from 'primevue/toast';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
 import { useForm, useField } from 'vee-validate';
-import HInputText from '../../components/HInputText/index.vue';
-import HInputPassword from '../../components/HInputPassword/index.vue';
+import HInputText from '../../../components/HInputText/index.vue';
+import HInputPassword from '../../../components/HInputPassword/index.vue';
 import { useRouter } from 'vue-router';
 import { useMutation } from '@tanstack/vue-query';
-import { api } from '../../api/api.ts';
-import { errorToast, successToast } from '../../utils/toast.ts';
+import { api } from '../../../api/api.ts';
+import { errorToast, successToast } from '../../../utils/toast.ts';
+import { AxiosError } from 'axios';
 
 const toast = useToast();
 const router = useRouter();
@@ -41,17 +42,15 @@ const signUpMutation = useMutation({
 });
 
 const onSubmit = handleSubmit(async (values: SignUpForm) => {
-    await signUpMutation.mutateAsync(values);
-
-    if (signUpMutation.error.value) {
-        return errorToast(toast, signUpMutation.error);
-    }
-    if (signUpMutation.data.value) {
-        successToast(toast, signUpMutation.data.value.message);
+    try {
+        await signUpMutation.mutateAsync(values);
+        successToast(toast, signUpMutation.data.value?.data.message);
 
         setTimeout(() => {
             router.push('/auth/login');
         }, 4000);
+    } catch (e) {
+        if (e instanceof AxiosError) errorToast(toast, e);
     }
 });
 </script>

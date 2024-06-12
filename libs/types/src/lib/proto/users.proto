@@ -9,6 +9,16 @@ service UsersService {
   rpc FindOne(OptionalUser) returns (UserOrUndefined) {}
   rpc Create(CreateUserRequest) returns (UserOrUndefined) {}
   rpc Update(OptionalUser) returns (google.protobuf.Empty) {}
+  rpc ComparePasswords(ComparePasswordsRequest) returns (ComparePasswordsResponse) {}
+}
+
+message ComparePasswordsRequest {
+  string userId = 1;
+  string password = 2;
+}
+
+message ComparePasswordsResponse {
+  bool match = 1;
 }
 
 message OptionalUser {

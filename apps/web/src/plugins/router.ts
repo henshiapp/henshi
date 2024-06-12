@@ -6,7 +6,7 @@ import { adminGuard } from '../guards/admin.ts';
 const routes: ReadonlyArray<RouteRecordRaw> = [
     {
         path: '/',
-        component: () => import('../layouts/home.vue'),
+        component: () => import('../layouts/home/home.vue'),
         children: [
             {
                 path: '/',
@@ -20,42 +20,42 @@ const routes: ReadonlyArray<RouteRecordRaw> = [
             {
                 path: '/auth/login',
                 beforeEnter: [authGuard],
-                component: () => import('../pages/auth/login.vue'),
+                component: () => import('../pages/auth/login/login.vue'),
             },
             {
                 path: '/auth/signup',
-                component: () => import('../pages/auth/signup.vue'),
+                component: () => import('../pages/auth/signup/signup.vue'),
             },
         ],
     },
     {
         path: '/app',
-        component: () => import('../layouts/app.vue'),
+        component: () => import('../layouts/app/app.vue'),
         children: [
             {
                 path: '/app/admin',
                 beforeEnter: [authGuard, adminGuard],
                 children: [
                     {
-                        path: '/app/admin/index',
-                        component: () => import('../pages/app/admin/index.vue'),
+                        path: '/app/admin/users',
+                        component: () => import('../pages/app/admin/users/users.vue'),
                     },
                 ],
             },
             {
                 path: '/app/dashboard',
                 beforeEnter: [authGuard],
-                component: () => import('../pages/app/dashboard.vue'),
+                component: () => import('../pages/app/dashboard/dashboard.vue'),
             },
         ],
     },
     {
         path: '/errors',
-        component: () => import('../layouts/home.vue'),
+        component: () => import('../layouts/home/home.vue'),
         children: [
             {
                 path: '/errors/403',
-                component: () => import('../pages/errors/403.vue'),
+                component: () => import('../pages/errors/403/403.vue'),
             },
         ],
     },

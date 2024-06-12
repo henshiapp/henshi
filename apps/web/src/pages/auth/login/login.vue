@@ -6,12 +6,13 @@ import Toast from 'primevue/toast';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
 import { useForm, useField } from 'vee-validate';
-import HInputText from '../../components/HInputText/index.vue';
-import HInputPassword from '../../components/HInputPassword/index.vue';
+import HInputText from '../../../components/HInputText/index.vue';
+import HInputPassword from '../../../components/HInputPassword/index.vue';
 import { useMutation } from '@tanstack/vue-query';
-import { api } from '../../api/api.ts';
-import { errorToast } from '../../utils/toast.ts';
+import { api } from '../../../api/api.ts';
+import { errorToast } from '../../../utils/toast.ts';
 import { useRouter } from 'vue-router';
+import { AxiosError } from 'axios';
 
 const toast = useToast();
 const router = useRouter();
@@ -38,13 +39,11 @@ const loginMutation = useMutation({
 });
 
 const onSubmit = handleSubmit(async (values: LoginForm) => {
-    await loginMutation.mutateAsync(values);
-
-    if (loginMutation.error.value) {
-        return errorToast(toast, loginMutation.error);
-    }
-    if (loginMutation.data.value) {
+    try {
+        await loginMutation.mutateAsync(values);
         await router.push('/app/dashboard');
+    } catch (e) {
+        if (e instanceof AxiosError) errorToast(toast, e);
     }
 });
 </script>

@@ -3,14 +3,21 @@ import { BaseEntity } from './base.entity';
 import { PaginatedResponse, PaginationDto, PaginationMeta } from '@henshi/types';
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
-    async paginateByOffset(qb: QueryBuilder<T>, alias: string, dto: PaginationDto): Promise<PaginatedResponse<T>> {
-        const { search, searchBy, sort, order, itemsPerPage, fields, offset, relations } = dto;
+    async paginateByOffset(
+        qb: QueryBuilder<T>,
+        dto: PaginationDto,
+        alias: string,
+        searchBy: string[],
+    ): Promise<PaginatedResponse<T>> {
+        const { search, sort, order, page, itemsPerPage, fields, relations } = dto;
 
-        if (search && searchBy) {
-            qb.andWhere({
-                [searchBy]: {
-                    $ilike: `%${search}%`,
-                },
+        if (search) {
+            searchBy.forEach((column) => {
+                qb.orWhere({
+                    [column]: {
+                        $ilike: `%${search}%`,
+                    },
+                });
             });
         }
 
@@ -21,7 +28,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         qb.orderBy({ [sort]: order.toLowerCase() })
             .limit(parseInt(itemsPerPage))
             .select(fields)
-            .offset(offset);
+            .offset((parseInt(page) - 1) * parseInt(itemsPerPage));
 
         const [data, count] = await qb.getResultAndCount();
 
