@@ -9,6 +9,7 @@ export abstract class BaseService<
     UpdateDto extends Partial<EntityDTO<FromEntityType<Entity>>>,
 > {
     protected queryAlias: string = 'entity';
+    protected searchBy: string[] = ['name'];
 
     protected constructor(private readonly repository: BaseRepository<Entity>) {}
 
@@ -23,7 +24,7 @@ export abstract class BaseService<
     async findAll(dto: PaginationDto) {
         const qb = this.repository.createQueryBuilder(this.queryAlias);
 
-        return this.repository.paginateByOffset(qb, this.queryAlias, dto);
+        return this.repository.paginateByOffset(qb, dto, this.queryAlias, this.searchBy);
     }
 
     async findOne(query: Partial<Entity>) {
@@ -47,5 +48,17 @@ export abstract class BaseService<
         if (!entity) return;
 
         await this.repository.getEntityManager().removeAndFlush(entity);
+    }
+
+    async deleteMany(ids: string[]) {
+        const filteredIds = ids.filter((id) => !!id);
+
+        const entities = await this.repository.find({
+            id: {
+                $in: filteredIds,
+            },
+        } as any);
+
+        await this.repository.getEntityManager().removeAndFlush(entities);
     }
 }

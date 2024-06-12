@@ -6,10 +6,6 @@ export class PaginationDto {
     search?: string;
 
     @IsOptional()
-    @IsString()
-    searchBy?: string;
-
-    @IsOptional()
     @IsString({ each: true })
     fields?: string[] = [];
 
@@ -34,10 +30,6 @@ export class PaginationDto {
     @IsOptional()
     @IsString()
     order?: string = 'desc';
-
-    get offset(): number {
-        return (parseInt(this.page) - 1) * parseInt(this.itemsPerPage);
-    }
 }
 
 export class PaginationMeta {

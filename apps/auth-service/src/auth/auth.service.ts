@@ -38,14 +38,7 @@ export class AuthService implements OnModuleInit {
             throw new BadRequestException('User already exists');
         }
 
-        const hash = await this.hashData(signUpDto.password);
-
-        const { user: newUser } = await firstValueFrom(
-            this.usersService.create({
-                ...signUpDto,
-                password: hash,
-            }),
-        );
+        const { user: newUser } = await firstValueFrom(this.usersService.create(signUpDto));
 
         const tokens = await this.getTokens(newUser);
 
@@ -59,7 +52,9 @@ export class AuthService implements OnModuleInit {
 
         if (!user) throw new BadRequestException('The credentials are invalid');
 
-        const passwordMatches = await argon2.verify(user.password, data.password);
+        const { match: passwordMatches } = await firstValueFrom(
+            this.usersService.comparePasswords({ userId: user.id, password: data.password }),
+        );
 
         if (!passwordMatches) throw new BadRequestException('The credentials are invalid');
 
