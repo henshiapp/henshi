@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push the web image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: apps/web/Dockerfile
@@ -31,7 +31,7 @@ jobs:
           push: true
 
       - name: Build and push the auth service image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: apps/auth-service/Dockerfile
@@ -39,7 +39,7 @@ jobs:
           push: true
 
       - name: Build and push the users service image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: apps/users-service/Dockerfile
