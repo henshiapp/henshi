@@ -7,6 +7,7 @@
   "dependencies": {
     "@henshi/types": "workspace:*",
     "@henshi/decorators": "workspace:*",
+    "@henshi/guards": "workspace:*",
     "@mikro-orm/postgresql": "^6.2.9",
     "@nestjs/common": "^10.3.9"
   },

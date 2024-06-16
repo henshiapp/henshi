@@ -10,7 +10,7 @@ FROM base as builder
 WORKDIR /usr/src/app
 COPY . .
 RUN pnpm --filter @henshi/web install --frozen-lockfile
-RUN pnpm --filter @henshi/web run -r build
+RUN pnpm build --projects=@henshi/web
 
 
 FROM nginx:1.26.0-alpine AS prod

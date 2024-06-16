@@ -395,6 +395,9 @@ importers:
       '@henshi/decorators':
         specifier: workspace:*
         version: link:../decorators
+      '@henshi/guards':
+        specifier: workspace:*
+        version: link:../guards
       '@henshi/types':
         specifier: workspace:*
         version: link:../types
