@@ -9,7 +9,7 @@ import mikroOrmConfig from './database/mikro-orm.config';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: `../.env`,
+            envFilePath: `.env.production`,
             load: [config],
         }),
         MikroOrmModule.forRoot({ ...mikroOrmConfig, registerRequestContext: false, scope: Scope.REQUEST }),

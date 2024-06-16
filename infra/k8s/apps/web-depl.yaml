@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: web
+          image: henshi-web:latest
+          env:
+            - name: VITE_SERVER_URL
+              value: 'https://henshi.neumanf.com'
+          resources:
+            limits:
+              memory: '256Mi'
+              cpu: '100m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-srv
+spec:
+  selector:
+    app: web
+  ports:
+    - name: web
+      protocol: TCP
+      port: 8080
+      targetPort: 80

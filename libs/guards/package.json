@@ -7,11 +7,13 @@
   "dependencies": {
     "@henshi/types": "workspace:*",
     "@henshi/decorators": "workspace:*",
-    "@nestjs/common": "^10.3.8",
-    "@nestjs/core": "^10.0.0",
     "@nestjs/microservices": "^10.3.8",
     "express": "^4.19.2",
     "rxjs": "^7.8.1"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.3.8",
+    "@nestjs/core": "^10.0.0"
   },
   "type": "commonjs",
   "main": "./dist/index.js",

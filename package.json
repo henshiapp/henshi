@@ -1,5 +1,5 @@
 {
-  "name": "@henshi/source",
+  "name": "henshi",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -12,10 +12,11 @@
   },
   "private": true,
   "devDependencies": {
+    "@nx/workspace": "^19.3.0",
     "@types/node": "~20.13.0",
     "eslint": "^9.4.0",
+    "nx": "19.2.2",
     "prettier": "^3.3.0",
-    "typescript": "~5.4.2",
-    "nx": "19.2.2"
+    "typescript": "~5.4.2"
   }
 }

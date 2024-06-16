@@ -10,7 +10,7 @@ import { CacheStore } from '@nestjs/common/cache';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: `../.env`,
+            envFilePath: `.env.production`,
             load: [config],
         }),
         CacheModule.registerAsync({

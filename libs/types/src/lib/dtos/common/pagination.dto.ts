@@ -7,29 +7,29 @@ export class PaginationDto {
 
     @IsOptional()
     @IsString({ each: true })
-    fields?: string[] = [];
+    fields: string[] = [];
 
     @IsOptional()
     @IsString({ each: true })
-    relations?: string[] = [];
+    relations: string[] = [];
 
     @IsOptional()
     @IsNumberString()
-    page?: string = '1';
+    page: string = '1';
 
     // TODO: use class-transformer to string -> number
 
     @IsOptional()
     @IsNumberString()
-    itemsPerPage?: string = '10';
+    itemsPerPage: string = '10';
 
     @IsOptional()
     @IsString()
-    sort?: string = 'createdAt';
+    sort: string = 'createdAt';
 
     @IsOptional()
     @IsString()
-    order?: string = 'desc';
+    order: string = 'desc';
 }
 
 export class PaginationMeta {

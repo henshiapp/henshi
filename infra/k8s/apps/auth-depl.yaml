@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: auth
+          image: ghcr.io/henshiapp/henshi-auth:latest
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: PORT
+              value: '3000'
+            - name: FRONTEND_URL
+              value: 'https://henshi.neumanf.com'
+            - name: COOKIE_DOMAIN
+              value: '.neumanf.com'
+            - name: AUTH_MICROSERVICE_HOST
+              value: '0.0.0.0'
+            - name: AUTH_MICROSERVICE_PORT
+              value: '4000'
+            - name: USERS_MICROSERVICE_HOST
+              value: 'users-service'
+            - name: USERS_MICROSERVICE_PORT
+              value: '4010'
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: REDIS_URL
+            - name: JWT_ACCESS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: JWT_ACCESS_SECRET
+            - name: JWT_REFRESH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: JWT_REFRESH_SECRET
+            - name: MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: MAIL_HOST
+            - name: MAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: MAIL_PORT
+            - name: MAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: MAIL_USER
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: MAIL_PASSWORD
+          resources:
+            limits:
+              memory: '512Mi'
+              cpu: '250m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

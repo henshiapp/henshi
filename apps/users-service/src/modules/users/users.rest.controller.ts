@@ -18,7 +18,8 @@ export class UsersRestController extends BaseControllerFactory<User, CreateUserD
 
     @UseGuards(AuthGuard)
     @Get('me')
-    async me(@Req() req: Request) {
-        return this.usersService.findOne({ id: req.user['sub'] });
+    async me(@Req() req: any) {
+        const user: any = req.user;
+        return this.usersService.findOne({ id: user['sub'] });
     }
 }

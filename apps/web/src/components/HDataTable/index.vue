@@ -38,6 +38,11 @@ const editEntityDialog = ref(false);
 const selectedEntities = ref<BaseEntity[]>([]);
 const lazyParams = ref<PaginationDto>({
     page: '1',
+    fields: [],
+    relations: [],
+    itemsPerPage: '10',
+    sort: 'createdAt',
+    order: 'desc',
 });
 const menu = ref();
 const items = ref<MenuItem[]>([
@@ -113,7 +118,7 @@ const onActionsClick = (event: MouseEvent, data: BaseEntity) => {
 };
 
 const onSearch = () => {
-    lazyParams.value = { ...lazyParams.value, search: search.value, searchBy: 'name' };
+    lazyParams.value = { ...lazyParams.value, search: search.value };
 };
 
 const onPage = async (event: DataTablePageEvent) => {

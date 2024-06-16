@@ -8,6 +8,7 @@ import { UsersGrpcController } from './users.grpc.controller';
 import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from '@henshi/types';
 import { join } from 'node:path/win32';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { RolesGuard } from '@henshi/guards';
 
 @Module({
     imports: [
@@ -38,6 +39,12 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
         MikroOrmModule.forFeature([User]),
     ],
     controllers: [UsersRestController, UsersGrpcController],
-    providers: [UsersService],
+    providers: [
+        UsersService,
+        {
+            provide: 'ROLES_GUARD',
+            useClass: RolesGuard,
+        },
+    ],
 })
 export class UserModule {}

@@ -8,11 +8,12 @@
   "dependencies": {
     "@nestjs/microservices": "^10.3.8",
     "class-validator": "^0.14.1",
-    "protobufjs": "^7.3.0"
+    "protobufjs": "^7.3.0",
+    "rxjs": "^7.8.1"
   },
   "type": "commonjs",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "private": true,
   "devDependencies": {
     "ts-proto": "^1.156.2"

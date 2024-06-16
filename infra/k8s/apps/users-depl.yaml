@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: users
+          image: ghcr.io/henshiapp/henshi-users:latest
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: PORT
+              value: '3000'
+            - name: FRONTEND_URL
+              value: 'https://henshi.neumanf.com'
+            - name: AUTH_MICROSERVICE_HOST
+              value: 'auth-service'
+            - name: AUTH_MICROSERVICE_PORT
+              value: '4000'
+            - name: USERS_MICROSERVICE_HOST
+              value: '0.0.0.0'
+            - name: USERS_MICROSERVICE_PORT
+              value: '4010'
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: users-secret
+                  key: DATABASE_URL
+          resources:
+            limits:
+              memory: '512Mi'
+              cpu: '250m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-srv
+spec:
+  selector:
+    app: users
+  ports:
+    - name: users
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

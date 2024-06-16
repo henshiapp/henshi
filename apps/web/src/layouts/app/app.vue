@@ -10,6 +10,7 @@ import OverlayPanel from 'primevue/overlaypanel';
 import Avatar from 'primevue/avatar';
 import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
+import { AxiosError } from 'axios';
 
 const sidebarItems = [
     {
@@ -54,14 +55,13 @@ const logoutMutation = useMutation({
 });
 
 const logout = async () => {
-    logoutMutation.mutate();
-
-    if (logoutMutation.error.value) {
-        return errorToast(toast, logoutMutation.error);
+    try {
+        await logoutMutation.mutateAsync();
+        setAuthUser(null);
+        await router.push('/');
+    } catch (e) {
+        if (e instanceof AxiosError) errorToast(toast, e);
     }
-
-    setAuthUser(null);
-    await router.push('/');
 };
 </script>
 

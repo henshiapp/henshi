@@ -1,4 +1,7 @@
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+dotenv.config({
+    path: __dirname + '/../../.env.production',
+});
 import * as process from 'process';
 
 export default () => ({
@@ -6,12 +9,12 @@ export default () => ({
     port: parseInt(process.env.PORT, 10) || 3010,
     microservices: {
         auth: {
-            host: process.env.MICROSERVICE_HOST || 'localhost',
-            port: parseInt(process.env.MICROSERVICE_PORT) || 4000,
+            host: process.env.AUTH_MICROSERVICE_HOST || 'localhost',
+            port: parseInt(process.env.AUTH_MICROSERVICE_PORT) || 4000,
         },
         users: {
-            host: process.env.MICROSERVICE_HOST || 'localhost',
-            port: parseInt(process.env.MICROSERVICE_PORT) || 4010,
+            host: process.env.USERS_MICROSERVICE_HOST || 'localhost',
+            port: parseInt(process.env.USERS_MICROSERVICE_PORT) || 4010,
         },
     },
     client: {
