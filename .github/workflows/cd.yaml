@@ -33,7 +33,7 @@ jobs:
         with:
           context: .
           file: apps/web/Dockerfile
-          tags: ghrc.io/henshiapp/henshi-web:latest
+          tags: ghcr.io/henshiapp/henshi-web:latest
           push: true
 
       - name: Build and push the auth service image
@@ -41,7 +41,7 @@ jobs:
         with:
           context: .
           file: apps/auth-service/Dockerfile
-          tags: ghrc.io/henshiapp/henshi-auth:latest
+          tags: ghcr.io/henshiapp/henshi-auth:latest
           push: true
 
       - name: Build and push the users service image
@@ -49,5 +49,5 @@ jobs:
         with:
           context: .
           file: apps/users-service/Dockerfile
-          tags: ghrc.io/henshiapp/henshi-users:latest
+          tags: ghcr.io/henshiapp/henshi-users:latest
           push: true
