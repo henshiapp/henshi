@@ -8,6 +8,7 @@
     "lint": "nx run-many --target=lint --all --parallel",
     "format": "prettier --write \"**/*.{ts,vue,css}\"",
     "migrate": "pnpm -r run migration:run",
+    "clean": "rm -rf `find . -type d -name dist -not -path \"./node_modules/*\"` && rm -rf .nx",
     "docker:dev:up": "docker compose up -d"
   },
   "private": true,

@@ -7,7 +7,7 @@ FROM base AS build_server
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 RUN pnpm --filter=@henshi/users-service install --frozen-lockfile
-RUN pnpm --filter @henshi/users-service run -r build
+RUN pnpm build --projects=@henshi/users-service
 RUN pnpm --filter @henshi/users-service deploy --prod /prod/server
 
 FROM base AS production_server
